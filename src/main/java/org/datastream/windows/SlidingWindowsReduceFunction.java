@@ -48,7 +48,7 @@ public class SlidingWindowsReduceFunction {
         // 选择设置事件事件和处理事件
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "mt-mdh.local:9093");
+        properties.setProperty("bootstrap.servers", "JD:9092");
         properties.setProperty("group.id", "SlidingWindowsReduceFunction");
 
         FlinkKafkaConsumer010<String> kafkaConsumer010 = new FlinkKafkaConsumer010<>("KV",
@@ -65,7 +65,7 @@ public class SlidingWindowsReduceFunction {
                 .reduce(new ReduceFunction<Tuple2<String, Long>>() {
                     @Override
                     public Tuple2<String, Long> reduce(Tuple2<String, Long> v1, Tuple2<String, Long> v2) throws Exception {
-                        return new Tuple2<>(v1.f0, v1.f1 + v2.f1);
+                        return new Tuple2<>("all-fruit", v1.f1 + v2.f1);
                     }
                 });
 

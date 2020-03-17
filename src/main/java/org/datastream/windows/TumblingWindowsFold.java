@@ -47,7 +47,7 @@ public class TumblingWindowsFold {
         // 选择设置事件事件和处理事件
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "mt-mdh.local:9093");
+        properties.setProperty("bootstrap.servers", "JD:9092");
         properties.setProperty("group.id", "TumblingWindowsFold");
 
         FlinkKafkaConsumer010<String> kafkaConsumer010 = new FlinkKafkaConsumer010<>("KV",
@@ -66,7 +66,7 @@ public class TumblingWindowsFold {
                     // 字符串拼接功能，初始字符串为空，然后将数字追加其后
                     @Override
                     public String fold(String acc, Tuple2<String, Long> value) throws Exception {
-                        return acc + value.f1;
+                        return acc + value.f0 + ",";
                     }
                 });
 

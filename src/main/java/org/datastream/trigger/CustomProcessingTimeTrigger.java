@@ -10,6 +10,15 @@ public class CustomProcessingTimeTrigger extends Trigger<Object, TimeWindow> {
     private CustomProcessingTimeTrigger() {}
 
     private static int flag = 0;
+
+    /**
+     * 进入窗口的每个元素都会调用该方法。
+     * @param element
+     * @param timestamp
+     * @param window
+     * @param ctx
+     * @return
+     */
     @Override
     public TriggerResult onElement(Object element, long timestamp, TimeWindow window, TriggerContext ctx) {
         ctx.registerProcessingTimeTimer(window.maxTimestamp());
@@ -25,26 +34,56 @@ public class CustomProcessingTimeTrigger extends Trigger<Object, TimeWindow> {
         return TriggerResult.CONTINUE;
     }
 
+    /**
+     * 事件时间timer触发的时候被调用。
+     * @param time
+     * @param window
+     * @param ctx
+     * @return
+     * @throws Exception
+     */
     @Override
     public TriggerResult onEventTime(long time, TimeWindow window, TriggerContext ctx) throws Exception {
         return TriggerResult.CONTINUE;
     }
 
+    /**
+     * 处理时间timer触发的时候会被调用
+     * @param time
+     * @param window
+     * @param ctx
+     * @return
+     */
     @Override
     public TriggerResult onProcessingTime(long time, TimeWindow window, TriggerContext ctx) {
         return TriggerResult.FIRE;
     }
 
+    /**
+     * 该方法主要是执行窗口的删除操作。
+     * @param window
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void clear(TimeWindow window, TriggerContext ctx) throws Exception {
         ctx.deleteProcessingTimeTimer(window.maxTimestamp());
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean canMerge() {
         return true;
     }
 
+    /**
+     * 有状态的触发器相关，并在它们相应的窗口合并时合并两个触发器的状态，例如使用会话窗口。
+     * @param window
+     * @param ctx
+     */
     @Override
     public void onMerge(TimeWindow window,
                         OnMergeContext ctx) {

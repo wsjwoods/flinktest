@@ -24,7 +24,7 @@ public class EventDriverTest {
         // 选择设置事件事件和处理事件
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "mt-mdh.local:9093");
+        properties.setProperty("bootstrap.servers", "JD:9092");
         properties.setProperty("group.id", "EventDriverTest");
 
         FlinkKafkaConsumer010<JSONObject> kafkaConsumer010 = new FlinkKafkaConsumer010<>("jsontest",
@@ -48,8 +48,7 @@ public class EventDriverTest {
                         return v1;
                     }
                 });
-        res
-        .print();
+        res.print();
         env.execute(EventDriverTest.class.getCanonicalName());
     }
 

@@ -87,7 +87,7 @@ public class SessionWindowsAggregate {
         // 选择设置事件事件和处理事件
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "mt-mdh.local:9093");
+        properties.setProperty("bootstrap.servers", "JD:9092");
         properties.setProperty("group.id", "SessionWindowsAggregate");
 
         FlinkKafkaConsumer010<String> kafkaConsumer010 = new FlinkKafkaConsumer010<>("KV",
@@ -104,7 +104,7 @@ public class SessionWindowsAggregate {
 //                .windowAll(ProcessingTimeSessionWindows.withGap(Time.seconds(10)))
 //                .windowAll(EventTimeSessionWindows.withGap(Time.seconds(10)))
                 .windowAll(ProcessingTimeSessionWindows.withDynamicGap((element) -> {
-                    // 可以用事件里的标志自定义间隔，注意是浩渺级别的，我们这里是10s
+                    // 可以用事件里的标志自定义间隔，注意是毫秒级别的，我们这里是10s
                     return 10000;
                 }))
                 .trigger(CustomProcessingTimeTrigger.create()) //用了自定义触发器

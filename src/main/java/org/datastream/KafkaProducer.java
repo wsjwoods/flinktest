@@ -31,8 +31,8 @@ public class KafkaProducer {
 		for(int i = 0; i < 10000; i++){
 
 //			producer.send(new ProducerRecord<>("side",String.valueOf(points.nextInt(10)) ));
-			SendMsg_Json(producer);
-//			SendMsg_KV(producer);
+//			SendMsg_Json(producer);
+			SendMsg_KV(producer);
 //			SendMsg_KafkaEvent(producer);
 //			SendMsg_FlinkEngine(producer);
 			try {
@@ -90,8 +90,8 @@ public class KafkaProducer {
 		for(int i = 0; i < 3000; i++){
 			String str = list.get(points.nextInt(8))+" "+points.nextInt(5);
 			producer.send(new ProducerRecord<>("KV",String.valueOf(i), str));
-//			str = list.get(points.nextInt(8))+" "+points.nextInt(5);
-//			producer.send(new ProducerRecord<>("KV1",String.valueOf(i), str));
+			str = list.get(points.nextInt(8))+" "+points.nextInt(5);
+			producer.send(new ProducerRecord<>("KV1",String.valueOf(i), str));
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {

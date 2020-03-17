@@ -16,6 +16,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.util.Collector;
 import org.datastream.trigger.CustomProcessingTimeTrigger;
+import org.datastream.util.GetProperties;
 import org.datastream.util.Split2KV;
 
 import java.util.Properties;
@@ -40,8 +41,10 @@ public class TumblingWindowsProcessFunction {
 
         // 选择设置事件事件和处理事件
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
+
+        Properties comp = GetProperties.getProperties("common.properties");
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "mt-mdh.local:9093");
+        properties.setProperty("bootstrap.servers", comp.getProperty("kafka.server"));
         properties.setProperty("group.id", "TumblingWindowsProcessFunction");
 
         FlinkKafkaConsumer010<String> kafkaConsumer010 = new FlinkKafkaConsumer010<>("KV",
@@ -72,15 +75,15 @@ public class TumblingWindowsProcessFunction {
      */
      private static  class MyProcessWindowFunction
             extends ProcessWindowFunction<Tuple2<String, Long>, String, String, TimeWindow> {
-
+        long count = 0;
         @Override
         public void process(String key, Context context, Iterable<Tuple2<String, Long>> input, Collector<String> out) {
-            long count = 0;
+
             for (Tuple2<String, Long> in: input) {
                 count++;
             }
 
-            out.collect("Window: " + context.window() + "count: " + count);
+            out.collect("Window: " + context.window() + " key: " + key + " count: " + count);
         }
     }
 }
