@@ -16,7 +16,7 @@ public class KafkaProducer {
 	public static void main(String [] args)  {
 
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "mt-mdh.local:9093");
+		props.put("bootstrap.servers", "JD:9092");
 		props.put("acks", "all");
 		props.put("retries", 0);
 		props.put("batch.size", 16384);

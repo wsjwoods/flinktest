@@ -36,7 +36,7 @@ public class kafkaSourceWatermarkTest {
 		env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
 		Properties properties = new Properties();
-		properties.setProperty("bootstrap.servers", "mt-mdh.local:9093");
+		properties.setProperty("bootstrap.servers", "JD:9092");
 		properties.setProperty("group.id", "jsontest");
 
 		FlinkKafkaConsumer010<JSONObject> kafkaConsumer010 = new FlinkKafkaConsumer010<>("jsontest",
@@ -61,7 +61,7 @@ public class kafkaSourceWatermarkTest {
 			public JSONObject reduce(JSONObject v1, JSONObject v2) {
 				String fruit = v1.getString("fruit");
 				int number = v1.getInt("number");
-				int number1 = v1.getInt("number");
+				int number1 = v2.getInt("number");
 				int result = number1 +number;
 				JSONObject json = new JSONObject();
 				json.put("fruit",fruit);
